@@ -21,8 +21,8 @@ const Step3 = ({ onNext, onBack }) => {
             { name: "India", states: [
                 { name: "Maharashtra", cities: ["Mumbai", "Pune"] },
                 { name: "Karnataka", cities: ["Bangalore", "Mysore"] },
-                { name: "Delhi", cities: ["New Delhi", "Gurgaon"},
-                { name: "Uttar Pradesh", cities: ["Lucknow", "Noida"},
+                { name: "Delhi", cities: ["New Delhi", "Gurgaon"] },
+                { name: "Uttar Pradesh", cities: ["Lucknow", "Noida"] },
                 { name: "West Bengal", cities: ["Kolkata", "Siliguri"] }
             ] },
             { name: "Canada", states: [
