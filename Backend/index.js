@@ -8,7 +8,11 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || '*',
+  origin: function (origin, callback) {
+    // Remove trailing slash for comparison
+    const allowed = process.env.FRONTEND_URL && origin && origin.replace(/\/$/, '') === process.env.FRONTEND_URL.replace(/\/$/, '');
+    callback(null, allowed ? origin : false);
+  },
   credentials: true
 }));
 app.use(express.json());
