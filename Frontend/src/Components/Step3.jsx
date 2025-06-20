@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 
-const Step3 = ({ onNext, onBack }) => {
+const Step3 = ({ onNext, onBack, formData = {}, setFormData }) => {
     const [countries, setCountries] = useState([]);
     const [states, setStates] = useState([]);
     const [cities, setCities] = useState([]);
-    const [country, setCountry] = useState("");
-    const [state, setState] = useState("");
-    const [city, setCity] = useState("");
+    const [country, setCountry] = useState(formData.country || "");
+    const [state, setState] = useState(formData.state || "");
+    const [city, setCity] = useState(formData.city || "");
+    const [plan, setPlan] = useState(formData.plan || "Basic");
+    const [newsletter, setNewsletter] = useState(formData.newsletter !== undefined ? formData.newsletter : true);
 
-// Country States and cities (hardcoded because of no Api Restriction)
+    // Country States and cities (hardcoded because of no Api Restriction)
     useEffect(() => {
         setCountries([
             { name: "USA", states: [
@@ -65,10 +67,22 @@ const Step3 = ({ onNext, onBack }) => {
         }
     }, [state, states]);
 
+    const handleNext = () => {
+        setFormData({
+            ...formData,
+            country,
+            state,
+            city,
+            plan,
+            newsletter
+        });
+        onNext();
+    };
+
     return (
         <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg max-w-md mt-10 justify-center items-center ">
             <h2 className="text-2xl font-bold mb-4">Step 3: Preferences</h2>
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={e => e.preventDefault()}>
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Country:</label>
                     <select
@@ -114,15 +128,15 @@ const Step3 = ({ onNext, onBack }) => {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Subscription Plan:</label>
                     <div className="flex space-x-4">
                         <label className="inline-flex items-center">
-                            <input type="radio" name="plan" value="Basic" className="form-radio text-blue-500" defaultChecked />
+                            <input type="radio" name="plan" value="Basic" className="form-radio text-blue-500" checked={plan === "Basic"} onChange={() => setPlan("Basic")}/>
                             <span className="ml-2">Basic</span>
                         </label>
                         <label className="inline-flex items-center">
-                            <input type="radio" name="plan" value="Pro" className="form-radio text-blue-500" />
+                            <input type="radio" name="plan" value="Pro" className="form-radio text-blue-500" checked={plan === "Pro"} onChange={() => setPlan("Pro")}/>
                             <span className="ml-2">Pro</span>
                         </label>
                         <label className="inline-flex items-center">
-                            <input type="radio" name="plan" value="Enterprise" className="form-radio text-blue-500" />
+                            <input type="radio" name="plan" value="Enterprise" className="form-radio text-blue-500" checked={plan === "Enterprise"} onChange={() => setPlan("Enterprise")}/>
                             <span className="ml-2">Enterprise</span>
                         </label>
                     </div>
@@ -132,7 +146,8 @@ const Step3 = ({ onNext, onBack }) => {
                         type="checkbox"
                         id="newsletter"
                         className="form-checkbox text-blue-500"
-                        defaultChecked
+                        checked={newsletter}
+                        onChange={e => setNewsletter(e.target.checked)}
                     />
                     <label htmlFor="newsletter" className="ml-2 text-sm text-gray-700">Subscribe to newsletter</label>
                 </div>
@@ -140,7 +155,7 @@ const Step3 = ({ onNext, onBack }) => {
                     <button type="button" onClick={onBack} className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition duration-300">
                         Back
                     </button>
-                    <button type="button" onClick={onNext} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300">
+                    <button type="button" onClick={handleNext} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300">
                         Next
                     </button>
                 </div>
