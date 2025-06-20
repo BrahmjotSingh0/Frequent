@@ -1,6 +1,6 @@
 import React from "react";
 
-const Summary = ({ formData = {}, onBack, onSubmit }) => {
+const Summary = ({ formData = {}, onBack, onSubmit, loading }) => {
   return (
     <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg max-w-md mt-10 justify-center items-center ">
       <h2 className="text-3xl font-extrabold mb-6 text-center text-blue-700">Review Your Details</h2>
@@ -39,10 +39,13 @@ const Summary = ({ formData = {}, onBack, onSubmit }) => {
         </div>
       </div>
       <div className="flex justify-between mt-10">
-        <button type="button" onClick={onBack} className="px-5 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition duration-300 font-semibold">
+        <button type="button" onClick={onBack} className="px-5 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition duration-300 font-semibold" disabled={loading}>
           Back
         </button>
-        <button type="button" onClick={onSubmit} className="px-5 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300 font-semibold">
+        <button type="button" onClick={onSubmit} className="px-5 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300 font-semibold flex items-center" disabled={loading}>
+          {loading ? (
+            <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>
+          ) : null}
           Submit
         </button>
       </div>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useUsernameAvailability } from "../hooks";
 
 const Step1 = ({ onNext, onBack, formData = {}, setFormData }) => {
     const [username, setUsername] = useState(formData.username || "");
@@ -6,6 +7,7 @@ const Step1 = ({ onNext, onBack, formData = {}, setFormData }) => {
     const [newPassword, setNewPassword] = useState("");
     const [profilePicture, setProfilePicture] = useState(formData.profilePhoto || null);
     const [preview, setPreview] = useState(formData.profilePhoto || "https://via.placeholder.com/100");
+    const { available, checking } = useUsernameAvailability(username);
 
     const handlePictureChange = (e) => {
         const file = e.target.files[0];
@@ -45,6 +47,13 @@ const Step1 = ({ onNext, onBack, formData = {}, setFormData }) => {
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Username:</label>
                     <input type="text" value={username} onChange={e => setUsername(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+                    {username.length >= 4 && (
+                        <div className="mt-1 text-sm">
+                            {checking && <span className="text-gray-500">Checking availability...</span>}
+                            {!checking && available === false && <span className="text-red-500">This username is already taken</span>}
+                            {!checking && available === true && <span className="text-green-600">Username is available</span>}
+                        </div>
+                    )}
                 </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Current Password:</label>
